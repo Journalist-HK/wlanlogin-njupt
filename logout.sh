@@ -1,8 +1,14 @@
 #!/bin/sh
 
-local_ip=`ifconfig eth0.2 | grep inet | cut -d : -f 2 | cut -d " " -f 1` #detect ip
+WAN_INTERFACE=$(uci get "network.wan.ifname")
 
-curl 'http://10.10.244.11:801/eportal/?c=ACSetting&a=Logout&protocol=http:&hostname=10.10.244.11&iTermType=1&wlanacname=XL-BRAS-SR8806-X&mac=&ip=$local_ip&enAdvert=0&queryACIP=0' \
+if [ -n "$WAN_INTERFACE" ]; then
+  WAN_INTERFACE="dev $WAN_INTERFACE"
+fi
+
+local_ip=`ip -4 addr list dev $(uci get "network.wan.ifname") | grep "global" | sed -n 's/.*inet \([0-9.]\+\).*/\1/p' | head -n 1` #detect ip
+
+curl "http://10.10.244.11:801/eportal/?c=ACSetting&a=Logout&protocol=http:&hostname=10.10.244.11&iTermType=1&wlanacname=XL-BRAS-SR8806-X&mac=&ip=$local_ip&enAdvert=0&queryACIP=0" \
   -H 'Connection: keep-alive' \
   -H 'Cache-Control: max-age=0' \
   -H 'Upgrade-Insecure-Requests: 1' \

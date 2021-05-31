@@ -1,11 +1,5 @@
 #!/bin/sh
 
-WAN_INTERFACE=$(uci get "network.wan.ifname")
-
-if [ -n "$WAN_INTERFACE" ]; then
-  WAN_INTERFACE="dev $WAN_INTERFACE"
-fi
-
 local_ip=`ip -4 addr list dev $(uci get "network.wan.ifname") | grep "global" | sed -n 's/.*inet \([0-9.]\+\).*/\1/p' | head -n 1` #detect ip
 
 curl "http://10.10.244.11:801/eportal/?c=ACSetting&a=Logout&protocol=http:&hostname=10.10.244.11&iTermType=1&wlanacname=XL-BRAS-SR8806-X&mac=&ip=$local_ip&enAdvert=0&queryACIP=0" \

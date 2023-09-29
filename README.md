@@ -1,5 +1,10 @@
 # drcom-njupt
 ## 使用 cURL 命令自动登录校园网
+
+### Deprecated ###
+
+Please use https://github.com/Lintkey/njupt_net
+
 **2021-05-27更新：**
 * 原来命令里面用了单引号不能自动替换变量但是不知道为什么可以正常工作。现在改好了。
 * 添加了自动识别网卡的功能
